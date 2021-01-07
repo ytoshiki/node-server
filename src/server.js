@@ -3,6 +3,10 @@ const express = require('express');
 const chalk = require('chalk');
 const hbs = require('hbs');
 
+// Utils
+const getWeather = require('./utils/forcast');
+const getGetcode = require('./utils/geocode');
+
 const app = express();
 
 // Define paths
@@ -19,11 +23,48 @@ hbs.registerPartials(partialsPath);
 app.use(express.static(staticPath));
 
 app.get('/', (req, res) => {
-  res.render('index', { title: 'Dynamic', body: 'Site' });
+  res.render('index', { title: 'Weather', body: 'Site' });
 });
 
 app.get('/help', (req, res) => {
   res.render('help', { help: 'HELP' });
+});
+
+app.get('/weather', (req, res) => {
+  if (Object.keys(req.query).length == 0) {
+    return res.send('No query info is provided');
+  }
+
+  if (req.query.address) {
+    const { address } = req.query;
+
+    const callback = (location) => {
+      if (!location.lat || !location.lng) {
+        return res.status(400).json({
+          success: false,
+          message: 'Address in invalid'
+        });
+      }
+
+      getWeather(location.lat, location.lng, (weatherInfo) => {
+        if (Object.keys(weatherInfo).length === 0) {
+          return res.status(400).json({
+            success: false,
+            message: 'Unknown Error Occured'
+          });
+        }
+
+        return res.status(200).json({
+          success: true,
+          forecast: weatherInfo,
+          location: location,
+          address: req.query.address
+        });
+      });
+    };
+
+    getGetcode(address, callback);
+  }
 });
 
 app.get('*', (req, res) => {

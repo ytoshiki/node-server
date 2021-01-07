@@ -3,11 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/js/app.js"></script>
     <title>Document</title>
   </head>
   <body>
-    {{>header}}
-    <h1>{{title}}</h1>
-    <p>{{body}}</p>
+    <h1 style="font-size: 60px;">{{title}}</h1>
+    <form id="address_form">
+      <input placeholder="City Name" type="text" id="address">
+      <button id="address_button">Search</button>
+    </form>
+    <div id="weather_info">
+      <div class="weather"></div>
+      <img alt="" id="img">
+    </div>
 </body>
 </html>
