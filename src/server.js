@@ -8,7 +8,7 @@ const getWeather = require('./utils/forcast');
 const getGetcode = require('./utils/geocode');
 
 const app = express();
-
+const port = process.env.PORT || 3000;
 // Define paths
 const staticPath = path.join(__dirname, '../public');
 const viewsPath = path.join(__dirname, '../templates/views');
@@ -71,6 +71,6 @@ app.get('*', (req, res) => {
   res.send('404');
 });
 
-app.listen(3000, () => {
-  console.log(chalk.green.inverse('Node server running on Port 3000'));
+app.listen(port, () => {
+  console.log(chalk.green.inverse('Node server running on ' + port));
 });

@@ -11,7 +11,7 @@ function init() {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     if (input.value) {
-      const url = `http://localhost:3000/weather?address=${input.value}`;
+      const url = `/weather?address=${input.value}`;
       fetch(url)
         .then((response) => {
           return response.json();
